@@ -85,7 +85,7 @@
     }
     .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
-      background: var(--black);
+      background: #dc2626;
       color: var(--white);
       padding: 0.85rem 2rem;
       border-radius: 8px;
@@ -96,16 +96,17 @@
     }
     .btn-primary:hover { opacity: 0.8; }
     .btn-secondary {
-      border: 1px solid #d1d5db;
+      background: #93c5fd;
+      border: 1px solid #93c5fd;
       color: var(--black);
       padding: 0.85rem 2rem;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 500;
       font-size: 0.95rem;
-      transition: border-color .2s;
+      transition: opacity .2s;
     }
-    .btn-secondary:hover { border-color: var(--black); }
+    .btn-secondary:hover { opacity: 0.8; }
 
     /* STATS */
     .stats {
