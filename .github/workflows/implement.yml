@@ -20,6 +20,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           label_trigger: implement
+          model: claude-opus-4-5
           direct_prompt: |
             Zaimplementuj następującą zmianę na stronie demo (index.html):
 
