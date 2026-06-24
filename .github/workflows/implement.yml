@@ -29,4 +29,27 @@ jobs:
             OPIS:
             ${{ github.event.issue.body }}
 
-            Wprowadź zmiany w index.html, commituj i otwórz PR z opisem co zostało zmienione.
+            Wprowadź zmiany w index.html, commituj i pushuj branch.
+
+      - name: Auto-create PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ github.event.issue.number }}"
+          BRANCH=$(git ls-remote --heads origin "refs/heads/claude/issue-${ISSUE_NUM}-*" | awk '{print $2}' | sed 's|refs/heads/||' | head -1)
+          if [ -z "$BRANCH" ]; then
+            echo "Brak brancha Claude, pomijam tworzenie PR"
+            exit 0
+          fi
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number --jq 'length')
+          if [ "$EXISTING" -gt "0" ]; then
+            echo "PR już istnieje"
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "${{ github.event.issue.title }}" \
+            --body "Closes #${ISSUE_NUM}"
+          echo "✅ PR utworzony automatycznie"
