@@ -1,0 +1,32 @@
+name: Implement feedback via Claude
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  implement:
+    if: github.event.label.name == 'implement'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          trigger_phrase: ""
+          assignee_trigger: ""
+          direct_prompt: |
+            Zaimplementuj następującą zmianę na stronie demo (index.html):
+
+            TYTUŁ: ${{ github.event.issue.title }}
+
+            OPIS:
+            ${{ github.event.issue.body }}
+
+            Wprowadź zmiany w index.html, commituj i otwórz PR z opisem co zostało zmienione.
