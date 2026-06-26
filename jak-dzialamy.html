@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jak działamy — Liquid Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #ffffff; --gray: #6b7280; --light: #f3f4f6; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); line-height: 1.6; }
+
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 2rem; border-bottom: 1px solid #e5e7eb;
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; text-decoration: none; color: var(--black); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--black); font-weight: 500; }
+    .nav-cta {
+      background: var(--black); color: var(--white);
+      padding: 0.5rem 1.25rem; border-radius: 6px;
+      text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: 0.8; }
+
+    .page-hero {
+      max-width: 800px; margin: 0 auto;
+      padding: 4.5rem 2rem 3.5rem; text-align: center;
+    }
+    .page-tag {
+      display: inline-block; border: 1px solid #e5e7eb; border-radius: 100px;
+      padding: 0.3rem 1rem; font-size: 0.8rem; color: var(--gray); margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.1;
+    }
+    .page-sub { font-size: 1.1rem; color: var(--gray); max-width: 520px; margin: 0 auto; }
+
+    /* Process steps */
+    .process { background: var(--light); }
+    .process .section {
+      max-width: 1100px; margin: 0 auto; padding: 5rem 2rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .section-sub { color: var(--gray); font-size: 0.95rem; }
+    .process-visual {
+      background: var(--white); border: 1px solid #e5e7eb;
+      border-radius: 16px; padding: 2rem; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray); font-size: 0.9rem; position: sticky; top: 6rem;
+    }
+
+    .steps-full { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+    .step-full {
+      display: grid; grid-template-columns: 48px 1fr;
+      gap: 1.25rem; padding-bottom: 2.5rem; position: relative;
+    }
+    .step-full::before {
+      content: '';
+      position: absolute; left: 23px; top: 48px;
+      width: 2px; height: calc(100% - 32px);
+      background: #e5e7eb;
+    }
+    .step-full:last-child::before { display: none; }
+    .step-circle {
+      width: 48px; height: 48px;
+      background: var(--black); color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.95rem; flex-shrink: 0;
+    }
+    .step-content { padding-top: 10px; }
+    .step-content h3 { font-weight: 600; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .step-content p { color: var(--gray); font-size: 0.9rem; line-height: 1.65; }
+    .step-content .step-detail {
+      margin-top: 0.75rem; padding: 0.75rem 1rem;
+      background: var(--white); border: 1px solid #e5e7eb; border-radius: 8px;
+      font-size: 0.85rem; color: var(--gray);
+    }
+
+    /* Tools section */
+    .tools-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .tools-section h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; }
+    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .tool-chip {
+      padding: 1rem 1.25rem; border: 1px solid #e5e7eb; border-radius: 10px;
+      text-align: center;
+    }
+    .tool-chip .t-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+    .tool-chip .t-name { font-size: 0.8rem; font-weight: 600; }
+    .tool-chip .t-desc { font-size: 0.75rem; color: var(--gray); margin-top: 0.2rem; }
+
+    /* CTA */
+    .cta-bar {
+      border-top: 1px solid #e5e7eb; padding: 4rem 2rem; text-align: center;
+    }
+    .cta-bar h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .cta-bar p { color: var(--gray); margin-bottom: 1.75rem; }
+    .btn-primary {
+      background: #dc2626; color: var(--white); padding: 0.85rem 2rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: 0.8; }
+
+    footer {
+      border-top: 1px solid #e5e7eb; padding: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; color: var(--gray);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .process .section { grid-template-columns: 1fr; gap: 2rem; }
+      .process-visual { display: none; }
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Liquid Thread</a>
+    <div class="nav-links">
+      <a href="uslugi.html">Usługi</a>
+      <a href="jak-dzialamy.html" class="active">Jak działamy</a>
+      <a href="index.html#contact">Kontakt</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">Porozmawiajmy</a>
+  </nav>
+
+  <div class="page-hero">
+    <span class="page-tag">Proces</span>
+    <h1>Od briefu do produkcji</h1>
+    <p class="page-sub">Nie ma zbędnych spotkań, nie ma marnowania czasu. Pracujemy szybko i pokazujemy realne rezultaty od pierwszego dnia.</p>
+  </div>
+
+  <div class="process">
+    <div class="section">
+      <div>
+        <div class="section-label">Jak to wygląda</div>
+        <h2 class="section-title">Cztery kroki, jeden projekt</h2>
+        <p class="section-sub">Każdy projekt przechodzi przez ten sam sprawdzony proces — niezależnie czy to strona, kampania czy gra markowa.</p>
+
+        <div class="steps-full">
+          <div class="step-full">
+            <div class="step-circle">1</div>
+            <div class="step-content">
+              <h3>Brief i zakres</h3>
+              <p>Ustalamy co, kiedy i dla kogo. Jeden krótki formularz + opcjonalna 30-minutowa rozmowa — i mamy wszystko co potrzebujemy.</p>
+              <div class="step-detail">⏱ Czas: 1 dzień · Bez zbędnych deck'ów</div>
+            </div>
+          </div>
+          <div class="step-full">
+            <div class="step-circle">2</div>
+            <div class="step-content">
+              <h3>Demo w 48h</h3>
+              <p>Pierwsze live demo — realna strona, nie Figma. Możesz klikać, sprawdzać na telefonie, pokazać klientowi. To nie jest mockup.</p>
+              <div class="step-detail">⏱ Czas: 48h od briefu · URL do testów od razu</div>
+            </div>
+          </div>
+          <div class="step-full">
+            <div class="step-circle">3</div>
+            <div class="step-content">
+              <h3>Review z narzędziem</h3>
+              <p>Uwagi bezpośrednio na stronie — screenshot obszaru, krótki opis, wyślij. Żadnych długich maili z „na screenie 3 zaznaczonym strzałką..."</p>
+              <div class="step-detail">⏱ Czas: ile potrzebujesz · Nasze Review Tool w akcji</div>
+            </div>
+          </div>
+          <div class="step-full">
+            <div class="step-circle">4</div>
+            <div class="step-content">
+              <h3>Wdrożenie i produkcja</h3>
+              <p>Poprawki wdrażamy tego samego dnia. Deploy automatyczny — żadnego ręcznego FTP. Historia zmian dostępna zawsze.</p>
+              <div class="step-detail">⏱ Czas: poprawki tego samego dnia · Auto-deploy po merge</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-visual">
+        [ Podgląd projektu ]
+      </div>
+    </div>
+  </div>
+
+  <!-- Narzędzia -->
+  <div class="tools-section">
+    <h2>Narzędzia, z których korzystamy</h2>
+    <div class="tools-grid">
+      <div class="tool-chip">
+        <div class="t-icon">🔥</div>
+        <div class="t-name">Firebase</div>
+        <div class="t-desc">Hosting, baza, auth</div>
+      </div>
+      <div class="tool-chip">
+        <div class="t-icon">🐙</div>
+        <div class="t-name">GitHub</div>
+        <div class="t-desc">Kod, CI/CD, review</div>
+      </div>
+      <div class="tool-chip">
+        <div class="t-icon">📊</div>
+        <div class="t-name">GA4 / GTM</div>
+        <div class="t-desc">Analytics, eventy</div>
+      </div>
+      <div class="tool-chip">
+        <div class="t-icon">⚡</div>
+        <div class="t-name">Review Tool</div>
+        <div class="t-desc">Feedback na żywo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <h2>Zaczynamy?</h2>
+    <p>Napisz do nas — odpiszemy w ciągu kilku godzin.</p>
+    <a href="mailto:hello@liquidthread.pl" class="btn-primary">hello@liquidthread.pl</a>
+  </div>
+
+  <footer>
+    <span>© 2026 Liquid Thread</span>
+    <span>Warszawa, Polska</span>
+  </footer>
+
+</body>
+</html>

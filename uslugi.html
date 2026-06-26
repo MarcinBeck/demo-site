@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usługi — Liquid Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #ffffff; --gray: #6b7280; --light: #f3f4f6; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); line-height: 1.6; }
+
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 2rem; border-bottom: 1px solid #e5e7eb;
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; text-decoration: none; color: var(--black); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--black); font-weight: 500; }
+    .nav-cta {
+      background: var(--black); color: var(--white);
+      padding: 0.5rem 1.25rem; border-radius: 6px;
+      text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: 0.8; }
+
+    .page-hero {
+      max-width: 800px; margin: 0 auto;
+      padding: 4.5rem 2rem 3.5rem; text-align: center;
+    }
+    .page-tag {
+      display: inline-block; border: 1px solid #e5e7eb; border-radius: 100px;
+      padding: 0.3rem 1rem; font-size: 0.8rem; color: var(--gray); margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.1;
+    }
+    .page-sub { font-size: 1.1rem; color: var(--gray); max-width: 520px; margin: 0 auto; }
+
+    .section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* Advergaming — wyróżniona sekcja */
+    .highlight-section {
+      background: var(--black); color: var(--white);
+    }
+    .highlight-section .section {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+      padding: 5rem 2rem;
+    }
+    .highlight-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.12); color: #a3e635;
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.3rem 0.85rem; border-radius: 100px; margin-bottom: 1.25rem;
+    }
+    .highlight-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 1rem; line-height: 1.15;
+    }
+    .highlight-section p { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    .highlight-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .highlight-bullets li {
+      display: flex; gap: 0.6rem; align-items: flex-start;
+      color: rgba(255,255,255,0.85); font-size: 0.9rem;
+    }
+    .highlight-bullets li::before { content: '→'; color: #a3e635; font-weight: 700; flex-shrink: 0; }
+    .highlight-visual {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 2.5rem;
+      aspect-ratio: 4/3; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem; text-align: center;
+    }
+    .highlight-visual .big-icon { font-size: 4rem; }
+    .highlight-visual p { color: rgba(255,255,255,0.5); font-size: 0.875rem; max-width: 200px; }
+
+    /* Grid usług */
+    .services-intro { padding-top: 5rem; padding-bottom: 1rem; }
+    .services-intro .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); margin-bottom: 0.75rem; }
+    .services-intro h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: -0.02em; }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem;
+    }
+    .feature-card {
+      padding: 2rem; border: 1px solid #e5e7eb; border-radius: 12px; transition: box-shadow .2s;
+    }
+    .feature-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .feature-icon {
+      width: 44px; height: 44px; background: var(--light); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 1.25rem;
+    }
+    .feature-title { font-weight: 600; margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+
+    /* CTA inline */
+    .cta-bar {
+      border-top: 1px solid #e5e7eb; margin-top: 5rem;
+      padding: 4rem 2rem; text-align: center;
+    }
+    .cta-bar h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .cta-bar p { color: var(--gray); margin-bottom: 1.75rem; }
+    .btn-primary {
+      background: #dc2626; color: var(--white); padding: 0.85rem 2rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: 0.8; }
+
+    footer {
+      border-top: 1px solid #e5e7eb; padding: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; color: var(--gray);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .highlight-section .section { grid-template-columns: 1fr; gap: 2.5rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Liquid Thread</a>
+    <div class="nav-links">
+      <a href="uslugi.html" class="active">Usługi</a>
+      <a href="jak-dzialamy.html">Jak działamy</a>
+      <a href="index.html#contact">Kontakt</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">Porozmawiajmy</a>
+  </nav>
+
+  <div class="page-hero">
+    <span class="page-tag">Co robimy</span>
+    <h1>Strony, kampanie i gry markowe</h1>
+    <p class="page-sub">Nie tylko budujemy strony — tworzymy doświadczenia, które angażują i konwertują.</p>
+  </div>
+
+  <!-- Advergaming — wyróżniony blok -->
+  <div class="highlight-section">
+    <div class="section">
+      <div>
+        <span class="highlight-tag">Nowość</span>
+        <h2>Advergaming — gry, które sprzedają</h2>
+        <p>Gry markowe to nowy wymiar kampanii. Zamiast kolejnego banera — interaktywne doświadczenie, które użytkownik chce zobaczyć do końca.</p>
+        <ul class="highlight-bullets">
+          <li>Mini-gry HTML5 osadzone na stronie kampanii</li>
+          <li>Mechaniki quizów, wyzwań i zbierania punktów</li>
+          <li>Integracja z nagrodami i programami lojalnościowymi</li>
+          <li>Full tracking — zdarzenia GA4, konwersje, czas w grze</li>
+          <li>Mobile-first, bez aplikacji — działa w przeglądarce</li>
+        </ul>
+      </div>
+      <div class="highlight-visual">
+        <div class="big-icon">🎮</div>
+        <p>Prototyp gry markowej w 48h</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pozostałe usługi -->
+  <div class="services-intro">
+    <div class="section">
+      <div class="section-label">Pozostałe usługi</div>
+      <h2>Pełne portfolio</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3 class="feature-title">Design & UI/UX</h3>
+          <p class="feature-desc">Strony, landing page'e i kampanie. Lo-fi → hi-fi → produkcja. Szybkie iteracje z feedbackiem w realu.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Frontend & Deploy</h3>
+          <p class="feature-desc">HTML/CSS/JS, Firebase, GCS, GitHub Pages. Kod, który działa — nie mock.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Analytics & Tracking</h3>
+          <p class="feature-desc">GA4, GTM, Firebase Analytics. Wiemy co mierzyć i jak to czytać. Konfiguracja i raporty.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3 class="feature-title">Automatyzacja</h3>
+          <p class="feature-desc">Review tool, CI/CD, auto-deploy. Skracamy pętle feedbacku — od uwagi do wdrożenia w minuty.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3 class="feature-title">Mobile First</h3>
+          <p class="feature-desc">Każdy projekt testujemy na urządzeniach. Responsywność nie jest opcją — jest podstawą.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3 class="feature-title">Szybkie prototypy</h3>
+          <p class="feature-desc">Potrzebujesz czegoś na pojutrze? To nasza specjalizacja. Gotowe rzeczy, nie prezentacje.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <h2>Masz projekt? Pogadajmy.</h2>
+    <p>Odpiszemy w ciągu kilku godzin i umówimy krótką rozmowę.</p>
+    <a href="mailto:hello@liquidthread.pl" class="btn-primary">hello@liquidthread.pl</a>
+  </div>
+
+  <footer>
+    <span>© 2026 Liquid Thread</span>
+    <span>Warszawa, Polska</span>
+  </footer>
+
+</body>
+</html>
