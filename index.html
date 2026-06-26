@@ -52,6 +52,7 @@
       transition: opacity .2s;
     }
     .nav-cta:hover { opacity: 0.8; }
+    .nav-cta--red { background: #dc2626; }
 
     /* HERO */
     .hero {
@@ -167,6 +168,26 @@
     }
     .link-more:hover { opacity: 0.6; }
 
+    /* MECHANICS */
+    .mechanics-section { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid #e5e7eb; }
+    .mechanics-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); margin-bottom: 1.25rem; }
+    .mechanics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .mechanic {
+      padding: 1.25rem;
+      background: var(--light);
+      border-radius: 10px;
+    }
+    .mechanic-icon { font-size: 1.4rem; margin-bottom: 0.6rem; }
+    .mechanic-name { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.3rem; }
+    .mechanic-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+
+    @media (max-width: 768px) { .mechanics-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .mechanics-grid { grid-template-columns: 1fr; } }
+
     /* HOW TEASER */
     .how-teaser { background: var(--light); }
     .how-teaser .section {
@@ -241,12 +262,12 @@
       <a href="jak-dzialamy.html">Jak działamy</a>
       <a href="#contact">Kontakt</a>
     </div>
-    <a href="#contact" class="nav-cta">Porozmawiajmy</a>
+    <a href="mailto:hello@liquidthread.pl" class="nav-cta nav-cta--red">Porozmawiajmy</a>
   </nav>
 
   <section class="hero">
     <span class="hero-tag">Agencja kreatywna i technologiczna</span>
-    <h1>Projekty, które <span>angażują</span> i działają</h1>
+    <h1>Projekty, które <span>działają</span> i wyglądają</h1>
     <p class="hero-sub">Łączymy design, kod i strategię. Budujemy kampanie, strony, gry i narzędzia — szybko i na produkcji.</p>
     <div class="hero-buttons">
       <a href="#contact" class="btn-primary">Zacznijmy projekt</a>
@@ -293,7 +314,35 @@
       </div>
     </div>
 
-    <a href="uslugi.html" class="link-more">Wszystkie usługi →</a>
+    <!-- Przykładowe mechaniki advergamingowe -->
+    <div class="mechanics-section">
+      <div class="mechanics-label">Przykładowe realizacje</div>
+      <div class="mechanics-grid">
+        <div class="mechanic">
+          <div class="mechanic-icon">🏆</div>
+          <div class="mechanic-name">Konkurs z kodami</div>
+          <div class="mechanic-desc">Kod z opakowania → walidacja → nagroda. Firestore, deduplikacja, panel wyników.</div>
+        </div>
+        <div class="mechanic">
+          <div class="mechanic-icon">🎯</div>
+          <div class="mechanic-name">Quiz produktowy</div>
+          <div class="mechanic-desc">Pytania, wynik końcowy, rekomendacja produktu i share na social media.</div>
+        </div>
+        <div class="mechanic">
+          <div class="mechanic-icon">🎰</div>
+          <div class="mechanic-name">Instant win</div>
+          <div class="mechanic-desc">Loteria chwilowa z animacją. Kontrolowana szansa wygranej, limity dzienny.</div>
+        </div>
+        <div class="mechanic">
+          <div class="mechanic-icon">🗺️</div>
+          <div class="mechanic-name">Mapa punktów</div>
+          <div class="mechanic-desc">Zbieranie punktów z interaktywną mapą i systemem poziomów.</div>
+        </div>
+      </div>
+      <a href="uslugi.html#advergaming" class="link-more" style="margin-top: 1.5rem; display: inline-flex;">Advergaming — szczegóły →</a>
+    </div>
+
+    <a href="uslugi.html" class="link-more" style="margin-top: 2.5rem; display: inline-flex;">Wszystkie usługi →</a>
   </section>
 
   <!-- Jak działamy — teaser -->
